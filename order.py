@@ -35,11 +35,11 @@ class Order:
     def get_user_position(self):
         return self.__userPosition
 
-    def get_status(self):
-        return self.__orderStatus
-
     def set_status(self, _status: str):
         self.__orderStatus = _status
+
+    def get_status(self):
+        return self.__orderStatus
 
     def get_dict(self):
         return self.__orderDict

@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7afd164-a885-4d5c-bb5f-3893400ee2a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/PythonLab1.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/item.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/order.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/store.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user.py" afterDir="false" />
+    <list default="true" id="f7afd164-a885-4d5c-bb5f-3893400ee2a9" name="Changes" comment="Reformating from Pycharm thingy">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/provider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store.py" beforeDir="false" afterPath="$PROJECT_DIR$/store.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/worker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +64,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
+    "run.code.analysis.last.selected.profile": "aDefault",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
@@ -115,6 +113,28 @@
       <option name="presentableId" value="Default" />
       <updated>1712477488688</updated>
     </task>
+    <task id="LOCAL-00001" summary="Another commit">
+      <option name="closed" value="true" />
+      <created>1714761416547</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1714761416547</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Reformating from Pycharm thingy">
+      <option name="closed" value="true" />
+      <created>1714761816259</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1714761816259</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Another commit" />
+    <MESSAGE value="Reformating from Pycharm thingy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformating from Pycharm thingy" />
   </component>
 </project>

@@ -43,8 +43,7 @@ class Provider:
         return result
 
     def update_stocks(self, _request: dict):
-        d = {}
-        d1 = {}
+        d, d1 = {}, {}
         for i, j in self.get_provider_item_list().items():
             a = j
             b = _request[i]

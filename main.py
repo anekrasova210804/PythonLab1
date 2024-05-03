@@ -42,14 +42,14 @@ for i in example_user.get_available_stores():
     i.start_shift()
 
 comp_time: datetime.datetime
-while True:
 
+while True:
     print("Do you want to make new order? (Yes or Other)")
-    choice = input()
-    if choice.lower() == "yes":
+    if input().lower() == "yes":
         example_user.register()
         comp_time = datetime.datetime.now()
         example_user.make_order()
+
         print("\tWORKER CELERY:")
         store1.give_celery(comp_time)
         store2.give_celery(comp_time)

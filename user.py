@@ -36,8 +36,7 @@ class User:
 
         while True:
             print("Do you want to add a new product to your Order? (Yes or Other)")
-            choice = input()
-            if choice.lower() == "yes":
+            if input().lower() == "yes":
                 _index = int(input("Please write the index of a product you wish to buy: "))
                 while _index > len(list(min_store.get_store_item_list())) or _index < 0:
                     print("Incorrect index!")
@@ -60,8 +59,6 @@ class User:
             comparison_list.append((self.__availableStores[i].is_available_to_deliver(self.__userOrder),
                                     self.__availableStores[i].calculate_approximate_time(self.__userOrder,
                                                                                          self.__userAddress)))
-
-        for i in range(len(self.__availableStores)):
             if comparison_list[i][0]:
                 availability_check = True
                 if comparison_list[i][1] < min_store.calculate_approximate_time(self.__userOrder, self.__userAddress):
@@ -90,5 +87,4 @@ class User:
         self.__userOrder.set_status("DELIVERED")
         self.__userOrder.set_delivery_time(datetime.datetime.now())
         print("Order has been delivered at time ", self.__userOrder.get_delivery_time(), "!!!!")
-        print("\tYour order:")
-        print(self.__userOrder)
+        print("\tYour order:", str(self.__userOrder))

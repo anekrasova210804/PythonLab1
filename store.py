@@ -9,22 +9,19 @@ import worker
 
 
 class Store:
-    __storeItemList: dict
+    __storeItemList: dict = {}
     __storeId: str
-    __storeRequest: dict
+    __storeRequest: dict = {}
     __storeAvailableProviders: list[provider.Provider]
     __storePosition: int
-    __storeWorkers: list[worker.Worker]
+    __storeWorkers: list[worker.Worker] = []
     __storeStartShift: datetime.datetime
     __storeEndShift: datetime.datetime
 
     def __init__(self, store_id, store_position: int, _start: datetime.datetime, _finish: datetime.datetime,
                  _providers: list):
         self.__storeId = store_id
-        self.__storeItemList = {}
-        self.__storeRequest = {}
         self.__storePosition = store_position
-        self.__storeWorkers = []
         self.__storeStartShift = _start
         self.__storeEndShift = _finish
         self.__storeAvailableProviders = _providers
@@ -37,6 +34,10 @@ class Store:
 
     def get_store_workers(self):
         return self.__storeWorkers
+
+    def show_store_workers(self):
+        for i in range(len(self.get_store_workers())):
+            print(str(i + 1), str(self.get_store_workers()[i]))
 
     def get_store_id(self):
         return self.__storeId
@@ -65,26 +66,22 @@ class Store:
     def set_store_item_list(self, _new_list):
         self.__storeItemList = _new_list
 
-    def sample_store_item_list(self):
-        for i in self.__storeAvailableProviders:
-            for j in i.get_provider_item_list().keys():
-                self.__storeItemList[j] = 5
-
     def show_item_list(self):
         k = 1
         for i, j in self.__storeItemList.items():
             print(str(k), ". ", str(i), ". In stock: ", str(j))
             k += 1
 
+    def sample_store_item_list(self):
+        for i in self.__storeAvailableProviders:
+            for j in i.get_provider_item_list().keys():
+                self.__storeItemList[j] = 5
+
     def show_item_list_no_stock_info(self):
         k = 1
         for i in self.__storeItemList.keys():
             print(str(k), ". ", str(i))
             k += 1
-
-    def show_store_workers(self):
-        for i in range(len(self.get_store_workers())):
-            print(str(i + 1), str(self.get_store_workers()[i]))
 
     def something_is_missing(self, _order: order.Order):
         for i, j in _order.get_dict().items():
@@ -97,17 +94,17 @@ class Store:
         for i in self.get_store_workers():
             if isinstance(i, worker.Courier):
                 if i.get_in_store():
-                    total_minutes = int((datetime.datetime.now() - _time).total_seconds() // 60)
-                    i.add_to_celery(total_minutes * 5)
-                    print("Gave Courier", i.get_worker_name(), "a celery of", total_minutes * 5,
-                          ". Their budget is ", i.get_celery())
+                    i.add_to_celery(int((datetime.datetime.now() - _time).total_seconds() // 60) * 5)
+                    print("Gave Courier", i.get_worker_name(), "a celery of",
+                          (int((datetime.datetime.now() - _time).total_seconds() // 60) * 5), ". Their budget is ",
+                          i.get_celery())
 
             if isinstance(i, worker.Storekeeper):
                 if i.get_available():
-                    total_minutes = int((datetime.datetime.now() - _time).total_seconds() // 60)
-                    i.add_to_celery(total_minutes * 5)
-                    print("Gave Storekeeper", i.get_worker_name(), "a celery of", total_minutes * 5,
-                          ". Their budget is ", i.get_celery())
+                    i.add_to_celery(int((datetime.datetime.now() - _time).total_seconds() // 60) * 5)
+                    print("Gave Storekeeper", i.get_worker_name(), "a celery of",
+                          (int((datetime.datetime.now() - _time).total_seconds() // 60) * 5), ". Their budget is ",
+                          i.get_celery())
 
     def is_available_to_deliver(self, _order: order.Order):
         if not (self.get_store_start_shift() <= _order.get_creation_time() < self.get_store_end_shift()):
@@ -193,8 +190,7 @@ class Store:
         else:
             while True:
                 print("Do you want to request more products? (Yes or Other)")
-                choice = input()
-                if choice.lower() == "yes":
+                if input().lower() == "yes":
                     product_index = int(input("Please write the index of a product you wish to request: "))
 
                     while product_index > len(list(_provider.get_provider_item_list())):
@@ -210,6 +206,7 @@ class Store:
                     self.__storeRequest[list(_provider.get_provider_item_list())[product_index - 1]] = product_count
                 else:
                     break
+
         for i in _provider.get_provider_item_list().keys():
             if i not in list(self.__storeRequest.keys()):
                 self.__storeRequest[i] = 0
@@ -217,6 +214,7 @@ class Store:
         print("\tCongrats! The request has been created:")
         for i in self.__storeRequest.keys():
             i.set_provider_id(_provider.get_provider_id())
+
         self.show_current_request()
 
     def send_request(self):
@@ -237,8 +235,8 @@ class Store:
                 i.set_in_store(True)
         self.send_request()
 
-    def add_a_worker(self, _name, _storekeeper: bool):
-        if _storekeeper:
+    def add_a_worker(self, _name: str, are_they_a_storekeeper: bool):
+        if are_they_a_storekeeper:
             self.__storeWorkers.append(worker.Storekeeper(_name))
         else:
             self.__storeWorkers.append(worker.Courier(_name, self.__storePosition))
@@ -247,32 +245,23 @@ class Store:
         if not self.__storeWorkers:
             print("It seems ", self.__storeId, " has no workers. You will need to add at least one courier and"
                                                " storekeeper!")
-            courier_name = input("Write the name of a courier: ")
-            storekeeper_name = input("Write the name of a storekeeper: ")
-            self.__storeWorkers.append(worker.Courier(courier_name, self.__storePosition))
-            self.__storeWorkers.append(worker.Storekeeper(storekeeper_name))
+
+            self.add_a_worker(input("Write the name of a courier: "), False)
+            self.add_a_worker(input("Write the name of a storekeeper: "), True)
         else:
             print("\t", self.__storeId, "'s workers: ")
             self.show_store_workers()
+
             if not any(isinstance(x, worker.Courier) for x in self.get_store_workers()):
-                print("You will need a Courier")
-                courier_name = input("Write the name of a courier: ")
-                self.__storeWorkers.append(worker.Courier(courier_name, self.__storePosition))
+                self.add_a_worker(input("You will need a Courier. Write the name of a courier: "), False)
             if not any(isinstance(x, worker.Storekeeper) for x in self.get_store_workers()):
-                print("You will need a Storekeeper")
-                storekeeper_name = input("Write the name of a storekeeper: ")
-                self.__storeWorkers.append(worker.Storekeeper(storekeeper_name))
+                self.add_a_worker(input("You will need a Storekeeper. Write the name of a storekeeper: "), True)
 
         while True:
             print("Do you want to add another worker? (Yes or Other)")
-            choice = input()
-            if choice.lower() == "yes":
-                _name = input("Please write the name of a worker: ")
+            if input().lower() == "yes":
                 if_storekeeper = input("Write YES, if a worker is a storekeeper or something else, if "
                                        "they are a courier: ")
-                if if_storekeeper.lower() == "yes":
-                    self.__storeWorkers.append(worker.Storekeeper(_name))
-                else:
-                    self.__storeWorkers.append(worker.Courier(_name, self.__storePosition))
+                self.add_a_worker(input("Please write the name of a worker: "), if_storekeeper.lower() == "yes")
             else:
                 break
