@@ -1,6 +1,7 @@
 import datetime
 import random
 from collections import Counter
+
 import item
 import order
 import provider
@@ -98,8 +99,8 @@ class Store:
                 if i.get_in_store():
                     total_minutes = int((datetime.datetime.now() - _time).total_seconds() // 60)
                     i.add_to_celery(total_minutes * 5)
-                    print("Gave Courier", i.get_worker_name(), "a celery of", total_minutes * 5, ". Their budget is "
-                          , i.get_celery())
+                    print("Gave Courier", i.get_worker_name(), "a celery of", total_minutes * 5,
+                          ". Their budget is ", i.get_celery())
 
             if isinstance(i, worker.Storekeeper):
                 if i.get_available():

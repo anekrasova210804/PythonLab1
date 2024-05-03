@@ -67,7 +67,7 @@ class Courier(Worker):
     def get_order(self, _order):
         self.__time_back = \
             (datetime.datetime.now() + datetime.timedelta
-                (seconds=2 * self.calculate_delivery_time(_order.get_user_position()) + 4))
+            (seconds=2 * self.calculate_delivery_time(_order.get_user_position()) + 4))
 
         print("Order began being delivered by a Courier " + self.__workerName)
         time.sleep(2)  # вместо мин

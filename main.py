@@ -41,7 +41,6 @@ example_user = user.User([store1, store2])
 for i in example_user.get_available_stores():
     i.start_shift()
 
-
 comp_time: datetime.datetime
 while True:
 
