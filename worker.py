@@ -68,13 +68,13 @@ class Courier(Worker):
         return 2 * abs(_position - self.get_store_position())  # вместо 30 сек
 
     def get_shift(self, _store_start_shift: datetime.datetime, _store_end_shift: datetime.datetime):
-        time_difference = (_store_end_shift - _store_start_shift).total_seconds() // (60 * 60)
+        time_difference = (_store_end_shift - _store_start_shift).total_seconds() // (60*60)
         self.__workerShift = random.randint(1, int(time_difference))
 
     def get_order(self, _order):
         self.__time_back = \
             (datetime.datetime.now() + datetime.timedelta
-            (seconds=2 * self.calculate_delivery_time(_order.get_user_position()) + 4))
+                (seconds=2 * self.calculate_delivery_time(_order.get_user_position()) + 4))
 
         print("Order began being delivered by a Courier " + self.__workerName)
         time.sleep(2)  # вместо мин
@@ -125,7 +125,7 @@ class Storekeeper(Worker):
         return result
 
     def get_shift(self, _store_start_shift: datetime.datetime, _store_end_shift: datetime.datetime):
-        time_difference = (_store_end_shift - _store_start_shift).total_seconds() // (60 * 60)
+        time_difference = (_store_end_shift - _store_start_shift).total_seconds() // (60*60)
         self.__workerShift = random.randint(1, int(time_difference))
 
     def get_order(self, _order):

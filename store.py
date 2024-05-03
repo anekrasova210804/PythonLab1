@@ -179,17 +179,17 @@ class Store:
         _order.get_courier().get_order(_order)
 
     def __create_request(self, _provider: provider.Provider):
-        self.__storeRequest = {}
         if not self.__storeItemList:
             print("Store has nothing in stock at the moment.")
 
         print("\tProduct available from Provider", _provider.get_provider_id())
         _provider.show_provider_item_list()
+        self.__storeRequest = {}
         if not _provider.get_provider_item_list():
             print("Sadly, provider has nothing available at the moment.")
         else:
             while True:
-                print("Do you want to request more products? (Yes or Other)")
+                print("\nDo you want to request more products? (Yes or Other)")
                 if input().lower() == "yes":
                     product_index = int(input("Please write the index of a product you wish to request: "))
 
@@ -207,23 +207,24 @@ class Store:
                 else:
                     break
 
-        for i in _provider.get_provider_item_list().keys():
-            if i not in list(self.__storeRequest.keys()):
-                self.__storeRequest[i] = 0
+        if self.__storeRequest:
+            for i in _provider.get_provider_item_list().keys():
+                if i not in list(self.__storeRequest.keys()):
+                    self.__storeRequest[i] = 0
 
-        print("\tCongrats! The request has been created:")
-        for i in self.__storeRequest.keys():
-            i.set_provider_id(_provider.get_provider_id())
-
-        self.show_current_request()
+            print("\tCongrats! The request has been created:")
+            for i in self.__storeRequest.keys():
+                i.set_provider_id(_provider.get_provider_id())
+            self.show_current_request()
 
     def send_request(self):
-        print("You are creating a request for a Store: ", self.__storeId)
+        print("\nYou are creating a request for a Store: " + self.__storeId + "\n")
         for i in self.__storeAvailableProviders:
             self.__create_request(i)
-            self.set_store_item_list(Counter(self.get_store_item_list()) + Counter(i.send_order(self.__storeRequest)))
-
-        print("Request has been properly processed.")
+            if self.__storeRequest:
+                self.set_store_item_list(Counter(self.get_store_item_list()) +
+                                         Counter(i.send_order(self.__storeRequest)))
+                print("Request has been properly processed.")
 
     def start_shift(self):
         self.add_workers()
@@ -249,7 +250,7 @@ class Store:
             self.add_a_worker(input("Write the name of a courier: "), False)
             self.add_a_worker(input("Write the name of a storekeeper: "), True)
         else:
-            print("\t", self.__storeId, "'s workers: ")
+            print("\n"+ self.__storeId + "'s workers: ")
             self.show_store_workers()
 
             if not any(isinstance(x, worker.Courier) for x in self.get_store_workers()):
@@ -258,7 +259,7 @@ class Store:
                 self.add_a_worker(input("You will need a Storekeeper. Write the name of a storekeeper: "), True)
 
         while True:
-            print("Do you want to add another worker? (Yes or Other)")
+            print("\nDo you want to add another worker? (Yes or Other)")
             if input().lower() == "yes":
                 if_storekeeper = input("Write YES, if a worker is a storekeeper or something else, if "
                                        "they are a courier: ")

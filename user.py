@@ -27,7 +27,7 @@ class User:
         self.__userAddress = _user_address
 
     def make_order(self):
-        print("\tYou are now creating an Order!")
+        print("\n\tYou are now creating an Order!")
         self.__userOrder.set_status("CREATED")
         self.__userOrder.set_dict({})
         self.__userOrder.set_user_position(self.__userAddress)
@@ -35,7 +35,7 @@ class User:
         min_store.show_item_list_no_stock_info()
 
         while True:
-            print("Do you want to add a new product to your Order? (Yes or Other)")
+            print("\nDo you want to add a new product to your Order? (Yes or Other)")
             if input().lower() == "yes":
                 _index = int(input("Please write the index of a product you wish to buy: "))
                 while _index > len(list(min_store.get_store_item_list())) or _index < 0:
@@ -66,18 +66,19 @@ class User:
 
         if bool(self.__userOrder.get_dict()):
             if availability_check:
-                print("The store that is optimal for you is ", min_store.get_store_id())
+                print("\nThe store that is optimal for you is ", min_store.get_store_id())
                 cancelled_checker = ""
                 if min_store.something_is_missing(self.__userOrder):
-                    print("It appears as if some products ar missing in this store. Do you want to cancel your order?")
+                    print("\nIt appears as if some products ar missing in this store. "
+                          "Do you want to cancel your order?")
                     cancelled_checker = input("Please write \"yes\" if you want to cancel your order: ")
 
                 if cancelled_checker.lower() == "yes":
                     print("We are deeply sorry.... :(")
                 else:
                     self.__userOrder.set_creation_time(datetime.datetime.now())
-                    print("\tThe APPROXIMATE time of delivery is ",
-                          str(min_store.calculate_approximate_time(self.__userOrder, self.__userAddress)))
+                    print("The APPROXIMATE time of delivery is ",
+                          str(min_store.calculate_approximate_time(self.__userOrder, self.__userAddress)), "\n")
                     self.take_order(min_store)  # взяли вещи
             else:
                 print("I'm sorry, no stores are available at the moment!")
@@ -86,5 +87,5 @@ class User:
         _store.take_order(self.__userOrder)
         self.__userOrder.set_status("DELIVERED")
         self.__userOrder.set_delivery_time(datetime.datetime.now())
-        print("Order has been delivered at time ", self.__userOrder.get_delivery_time(), "!!!!")
-        print("\tYour order:", str(self.__userOrder))
+        print("Order has been delivered at time ", self.__userOrder.get_delivery_time(), "!!!!\n")
+        print("\tYour order:\n", str(self.__userOrder))

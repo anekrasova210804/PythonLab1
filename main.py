@@ -44,7 +44,7 @@ for i in example_user.get_available_stores():
 comp_time: datetime.datetime
 
 while True:
-    print("Do you want to make new order? (Yes or Other)")
+    print("\nDo you want to make new order? (Yes or Other)")
     if input().lower() == "yes":
         example_user.register()
         comp_time = datetime.datetime.now()
