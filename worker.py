@@ -43,6 +43,9 @@ class Courier(Worker):
     def get_celery(self):
         return self.__workerCelery
 
+    def set_celery(self, _amount: int):
+        self.__workerCelery = _amount
+
     def add_to_celery(self, amount: int):
         self.__workerCelery += amount
 
@@ -103,6 +106,9 @@ class Storekeeper(Worker):
 
     def get_celery(self):
         return self.__workerCelery
+
+    def set_celery(self, _amount: int):
+        self.__workerCelery = _amount
 
     def add_to_celery(self, amount: int):
         self.__workerCelery += amount

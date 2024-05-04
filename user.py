@@ -77,16 +77,23 @@ class User:
                     print("We are deeply sorry.... :(")
                 else:
                     self.__userOrder.set_creation_time(datetime.datetime.now())
-                    print("Your TOTAL: " + str(self.__userOrder.calculate_total_price())+"\n")
-                    print("The APPROXIMATE time of delivery is ",
-                          str(min_store.calculate_approximate_time(self.__userOrder, self.__userAddress)), "\n")
+                    print("Your TOTAL: " + str(self.__userOrder.calculate_total_price()) + "\n")
+                    if {key: val for key, val in self.__userOrder.get_dict().items() if val != 0}:
+                        print("The APPROXIMATE time of delivery is ",
+                              str(min_store.calculate_approximate_time(self.__userOrder, self.__userAddress)), "\n")
                     self.take_order(min_store)  # взяли вещи
             else:
                 print("I'm sorry, no stores are available at the moment!")
 
     def take_order(self, _store: store.Store):
-        _store.take_order(self.__userOrder)
-        self.__userOrder.set_status("DELIVERED")
-        self.__userOrder.set_delivery_time(datetime.datetime.now())
-        print("Order has been delivered at time ", self.__userOrder.get_delivery_time(), "!!!!\n")
-        print("\tYour order:\n", str(self.__userOrder))
+        if {key: val for key, val in self.__userOrder.get_dict().items() if val != 0}:
+            _store.take_order(self.__userOrder)
+            self.__userOrder.set_status("DELIVERED")
+            self.__userOrder.set_delivery_time(datetime.datetime.now())
+            print("Order has been delivered at time ", self.__userOrder.get_delivery_time(), "!!!!\n")
+            print("\tYour order:\n", str(self.__userOrder))
+
+        if _store.something_is_missing(self.__userOrder):
+            for i in self.__userOrder.get_dict().keys():
+                if _store.get_store_item_list().get(i) == 0:
+                    _store.update_stocks(i, 5)

@@ -1,5 +1,6 @@
 import datetime
 import random
+import time
 from collections import Counter
 
 import item
@@ -14,7 +15,7 @@ class Store:
     __storeRequest: dict = {}
     __storeAvailableProviders: list[provider.Provider]
     __storePosition: int
-    __storeWorkers: list[worker.Worker] = []
+    __storeWorkers: list[worker.Worker]
     __storeStartShift: datetime.datetime
     __storeEndShift: datetime.datetime
 
@@ -25,6 +26,7 @@ class Store:
         self.__storeStartShift = _start
         self.__storeEndShift = _finish
         self.__storeAvailableProviders = _providers
+        self.__storeWorkers = [worker.Courier(store_id + "C", store_position), worker.Storekeeper(store_id + "S")]
 
     def get_store_start_shift(self):
         return self.__storeStartShift
@@ -36,8 +38,8 @@ class Store:
         return self.__storeWorkers
 
     def show_store_workers(self):
-        for i in range(len(self.get_store_workers())):
-            print(str(i + 1), str(self.get_store_workers()[i]))
+        for i in range(len(self.__storeWorkers)):
+            print(str(i + 1) + ". " + str(self.__storeWorkers[i]))
 
     def get_store_id(self):
         return self.__storeId
@@ -73,9 +75,14 @@ class Store:
             k += 1
 
     def sample_store_item_list(self):
+        k = False
         for i in self.__storeAvailableProviders:
             for j in i.get_provider_item_list().keys():
-                self.__storeItemList[j] = 5
+                if k:
+                    self.__storeItemList[j] = 5
+                else:
+                    self.__storeItemList[j] = 0
+                    k = True
 
     def show_item_list_no_stock_info(self):
         k = 1
@@ -84,27 +91,19 @@ class Store:
             k += 1
 
     def something_is_missing(self, _order: order.Order):
+        checker = False
         for i, j in _order.get_dict().items():
             if self.get_store_item_list()[i] == 0:
-                self.update_stocks(i, 5)
-                return True
-        return False
+                _order.get_dict()[i] = 0
+                checker = True
+        return checker
 
     def give_celery(self, _time):
-        for i in self.get_store_workers():
-            if isinstance(i, worker.Courier):
-                if i.get_in_store():
-                    i.add_to_celery(int((datetime.datetime.now() - _time).total_seconds() // 60) * 5)
-                    print("Gave Courier", i.get_worker_name(), "a celery of",
-                          (int((datetime.datetime.now() - _time).total_seconds() // 60) * 5), ". Their budget is ",
-                          i.get_celery())
-
-            if isinstance(i, worker.Storekeeper):
-                if i.get_available():
-                    i.add_to_celery(int((datetime.datetime.now() - _time).total_seconds() // 60) * 5)
-                    print("Gave Storekeeper", i.get_worker_name(), "a celery of",
-                          (int((datetime.datetime.now() - _time).total_seconds() // 60) * 5), ". Their budget is ",
-                          i.get_celery())
+        for i in self.__storeWorkers:
+            if (isinstance(i, worker.Courier) and i.get_in_store()) or (isinstance(i, worker.Storekeeper)
+                                                                        and i.get_available()):
+                i.set_celery(int((datetime.datetime.now() - _time).total_seconds() // 60) * 5)
+                print(i.get_worker_name(), "'s budget: " + str(i.get_celery()))
 
     def is_available_to_deliver(self, _order: order.Order):
         if not (self.get_store_start_shift() <= _order.get_creation_time() < self.get_store_end_shift()):
@@ -144,6 +143,7 @@ class Store:
 
     def calculate_approximate_time(self, _order: order.Order, _place: int):
         result = _order.get_creation_time()
+        _order.set_dict({key: val for key, val in _order.get_dict().items() if val != 0})
         for i, j in _order.get_dict().items():
             result += datetime.timedelta(seconds=3 * min(j, self.get_store_item_list()[i]))
         result += datetime.timedelta(seconds=2 * abs(self.__storePosition - _place)) + datetime.timedelta(seconds=4)
@@ -151,6 +151,7 @@ class Store:
 
     def update_stocks(self, _item: item.Item, _count: int):
         print("NEW REQUEST CREATED BECAUSE OF LACKING PRODUCT ITEMS!!")
+        time.sleep(2*_count)
         needed_index = next((i for i, obj in enumerate(self.get_available_providers()) if obj.get_provider_id()
                              == _item.get_provider_id()))
         self.set_store_item_list(Counter(self.get_store_item_list()) +
@@ -175,8 +176,10 @@ class Store:
             _order.get_dict()[i] = min(j, self.get_store_item_list()[i])
             self.__storeItemList[i] -= _order.get_dict()[i]
 
-        _order.get_storekeeper().get_order(_order)
-        _order.get_courier().get_order(_order)
+        _order.set_dict({key: val for key, val in _order.get_dict().items() if val != 0})
+        if bool(_order.get_dict()):
+            _order.get_storekeeper().get_order(_order)
+            _order.get_courier().get_order(_order)
 
     def __create_request(self, _provider: provider.Provider):
         if not self.__storeItemList:
@@ -250,7 +253,7 @@ class Store:
             self.add_a_worker(input("Write the name of a courier: "), False)
             self.add_a_worker(input("Write the name of a storekeeper: "), True)
         else:
-            print("\n"+ self.__storeId + "'s workers: ")
+            print("\n" + self.__storeId + "'s workers: ")
             self.show_store_workers()
 
             if not any(isinstance(x, worker.Courier) for x in self.get_store_workers()):

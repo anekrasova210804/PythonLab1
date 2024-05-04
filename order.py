@@ -46,7 +46,7 @@ class Order:
         return self.__orderDict
 
     def set_dict(self, _dict: dict):
-        self.__orderDict = _dict
+        self.__orderDict = {key: val for key, val in _dict.items() if val != 0}
 
     def get_creation_time(self):
         return self.__orderCreationTime
@@ -75,5 +75,5 @@ class Order:
     def calculate_total_price(self):
         result = 0
         for i, j in self.__orderDict.items():
-            result += i.get_price()*j
+            result += (i.get_price() * j)
         return result

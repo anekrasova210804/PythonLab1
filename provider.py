@@ -46,12 +46,10 @@ class Provider:
         d, d1 = {}, {}
         for i, j in self.get_provider_item_list().items():
             a = j
-            b = _request[i]
+            b = _request.get(i, 0)
             d[i] = min(a, b)
             d1[i] = a - d[i]
 
         self.set_provider_item_list(d1)
-        print("\tChanged provider item list:")
-        self.show_provider_item_list()
         print("Stocks updated.")
         return d

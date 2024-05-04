@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7afd164-a885-4d5c-bb5f-3893400ee2a9" name="Changes" comment="Fixing up console output">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/order.py" beforeDir="false" afterPath="$PROJECT_DIR$/order.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/user.py" afterDir="false" />
-    </list>
+    <list default="true" id="f7afd164-a885-4d5c-bb5f-3893400ee2a9" name="Changes" comment="Added a total price" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -142,7 +137,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714765371191</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added a total price">
+      <option name="closed" value="true" />
+      <created>1714796880593</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1714796880593</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -150,6 +153,7 @@
     <MESSAGE value="Reformating from Pycharm thingy" />
     <MESSAGE value="Cleaning up code" />
     <MESSAGE value="Fixing up console output" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixing up console output" />
+    <MESSAGE value="Added a total price" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a total price" />
   </component>
 </project>
