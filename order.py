@@ -1,6 +1,7 @@
 import datetime
 from dataclasses import dataclass
 
+import item
 import worker
 
 
@@ -8,7 +9,7 @@ import worker
 class Order:
     __userPosition: int
     __orderStatus: str
-    __orderDict: {}
+    __orderDict: {item.Item, int}
     __orderCreationTime: datetime.datetime
     __orderDeliveryTime: datetime.datetime
     __orderStorekeeper: worker.Storekeeper = None
@@ -70,3 +71,9 @@ class Order:
 
     def set_courier(self, _courier: worker.Courier):
         self.__orderCourier = _courier
+
+    def calculate_total_price(self):
+        result = 0
+        for i, j in self.__orderDict.items():
+            result += i.get_price()*j
+        return result

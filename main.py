@@ -17,7 +17,7 @@ provider2 = provider.Provider("2", {item21: 24, item22: 22, item23: 12})
 provider3 = provider.Provider("3", {item31: 3})
 
 d = datetime.date.today()
-t1 = datetime.time(8, 0, 0)
+t1 = datetime.time(7, 0, 0)
 t2 = datetime.time(23, 0, 0)
 t3 = datetime.time(23, 0, 0)
 

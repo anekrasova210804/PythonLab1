@@ -77,6 +77,7 @@ class User:
                     print("We are deeply sorry.... :(")
                 else:
                     self.__userOrder.set_creation_time(datetime.datetime.now())
+                    print("Your TOTAL: " + str(self.__userOrder.calculate_total_price())+"\n")
                     print("The APPROXIMATE time of delivery is ",
                           str(min_store.calculate_approximate_time(self.__userOrder, self.__userAddress)), "\n")
                     self.take_order(min_store)  # взяли вещи
